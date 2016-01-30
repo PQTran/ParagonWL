@@ -1,0 +1,76 @@
+﻿html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+input, label {
+    display: block;
+}
+
+html {
+    overflow: hidden;
+}
+
+.k-link.k-nav-fast.k-state-hover {
+    background-color: inherit;
+}
+
+.k-link.k-nav-fast {
+    cursor: default;
+}
+
+label {
+    text-align: left !important;
+}
+
+.checkboxSpacing {
+    margin-bottom: 15px;
+}
+
+.checkbox {
+    display: inline;
+    margin-right: 5px;
+}
+
+#navigationPanel {
+    overflow-y: hidden;
+    background: transparent url("../img/swirl_pattern25.png") repeat scroll 0% 0%;
+    position: relative;
+    min-width: 940px;
+}
+
+#iframePanel {
+    background: transparent url("../img/az_subtle.png") repeat scroll 0% 0%;
+}
+
+.creatorTag {
+    position: absolute;
+    right: 15px;
+    bottom: 0;
+    color: #707070;
+}
+
+.k-invalid-msg {
+    display: block;
+    margin-bottom: -17px;
+    color: red;
+    text-decoration-line: underline;
+    text-decoration-style: dotted;
+}
+
+.k-widget.k-tooltip {
+    margin-top: 10px;
+}
+
+#iframePanelPlaceHolder {
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+    padding-bottom: 200px;
+}
+
+
+.k-icon {
+    background-image: url(../img/sprite.png);
+}
