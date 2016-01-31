@@ -100,6 +100,7 @@
 
             $scope.getWorkLog = function () {
                 if ($scope.validator.validate()) {
+                    $('#username').blur();
                     $(".spinner").addClass("startLoading");
                     $("#iframePanelPlaceHolder").addClass("startLoading");
 
