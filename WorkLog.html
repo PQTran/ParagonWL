@@ -79,10 +79,10 @@
                 </div>
             </div>
 
-            <nav>
+            <nav id="taskButtons">
                 <ul class="nav">
                     <li><a href="#" class="icon-collapse" ng-click="collapsePanel()"></a></li>
-                    <li><a href="#" class="icon-login"></a></li>
+                    <li><a href="https://paragontesting.atlassian.net/" target="_newtab" class="icon-login"></a></li>
                     <li><a href="#" class="icon-heart"></a></li>
                     <li><a href="#" class="icon-information"></a></li>
                 </ul>
@@ -171,6 +171,8 @@
                 ],
                 resize: function () {
                     adjustInspirationalContentHeight();
+                    adjustTaskButtonsHeight();
+                    hideSplitterCollapseExpandButton();
                 }
             };
 
@@ -289,6 +291,13 @@
                 $scope.splitter.expand("#navigationPanel");
                 hideSplitterCollapseExpandButton();
                 $scope.navigationPanelIsCollapsed = false;
+            };
+
+            var adjustTaskButtonsHeight = function () {
+                var navigationPanelHeight = $('#navigationPanel').height();
+                var taskButtonTopAdjustment = navigationPanelHeight - 55;
+                
+                $('#taskButtons').css({ top: taskButtonTopAdjustment + "px", position: 'absolute' });
             };
 
         }]);
