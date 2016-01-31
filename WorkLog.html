@@ -26,6 +26,12 @@
         <div class="double-bounce1"></div>
         <div class="double-bounce2"></div>
     </div>
+    
+    <nav id="expandButton" ng-show="navigationPanelIsCollapsed">
+        <ul class="nav">
+            <li><a href="#" class="icon-expand" ng-click="expandPanel()"></a></li>
+        </ul>
+    </nav>
 
     <div kendo-splitter="splitter" id="splitter" k-options="splitterOptions" style="height:100%; border:0;">
         <div id="navigationPanel" style="text-align:center;">
@@ -75,7 +81,7 @@
 
             <nav>
                 <ul class="nav">
-                    <li><a href="#" class="icon-collapse"></a></li>
+                    <li><a href="#" class="icon-collapse" ng-click="collapsePanel()"></a></li>
                     <li><a href="#" class="icon-login"></a></li>
                     <li><a href="#" class="icon-heart"></a></li>
                     <li><a href="#" class="icon-information"></a></li>
@@ -164,14 +170,18 @@
                     { min: "390px" }
                 ],
                 resize: function () {
-                    var startingBottomFrameHeight = 503;
-                    var currentBottomFrameHeight = $("#iframePanel").height();
-                    var bottomFrameHeightDifference = startingBottomFrameHeight - currentBottomFrameHeight;
-
-                    var heightDiff = "-=" + (bottomFrameHeightDifference / 5).toString() + "px";
-
-                    $(".spinner").css('bottom', '25%').css('bottom', heightDiff);
+                    adjustInspirationalContentHeight();
                 }
+            };
+
+            var adjustInspirationalContentHeight = function () {
+                var startingBottomFrameHeight = 503;
+                var currentBottomFrameHeight = $("#iframePanel").height();
+                var bottomFrameHeightDifference = startingBottomFrameHeight - currentBottomFrameHeight;
+
+                var heightDiff = "-=" + (bottomFrameHeightDifference / 5).toString() + "px";
+
+                $(".spinner").css('bottom', '25%').css('bottom', heightDiff);
             };
 
             $scope.windowOptions = {
@@ -229,6 +239,8 @@
                     return false;
                 });
 
+                hideSplitterCollapseExpandButton();
+
                 $.getJSON("http://api.forismatic.com/api/1.0/?method=getQuote&lang=en&format=jsonp&jsonp=?", function (data) {
                     $("#inspirationalQuote").append(data.quoteText);
                     $("#inspirationalAuthor").append(data.quoteAuthor);
@@ -242,6 +254,11 @@
                 });
 
             });
+
+            var hideSplitterCollapseExpandButton = function () {
+                $(".k-icon.k-collapse-prev").hide();
+                $(".k-icon.k-expand-prev").hide();                
+            };
 
             $(document).on("click", ".k-overlay", function () {
                 $scope.closeWindow();
@@ -260,7 +277,19 @@
             $scope.closeWindow = function () {
                 $scope.window.close();
                 $("#username").focus();
-            }
+            };
+
+            $scope.collapsePanel = function () {
+                $scope.splitter.collapse("#navigationPanel");
+                hideSplitterCollapseExpandButton();
+                $scope.navigationPanelIsCollapsed = true;
+            };
+
+            $scope.expandPanel = function () {
+                $scope.splitter.expand("#navigationPanel");
+                hideSplitterCollapseExpandButton();
+                $scope.navigationPanelIsCollapsed = false;
+            };
 
         }]);
     </script>
