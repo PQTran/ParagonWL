@@ -35,13 +35,13 @@ label {
 
 #navigationPanel {
     overflow-y: hidden;
-    background: transparent url("../img/swirl_pattern25.png") repeat scroll 0% 0%;
+    background: transparent url("/img/swirl_pattern25.png") repeat scroll 0% 0%;
     position: relative;
     min-width: 940px;
 }
 
 #iframePanel {
-    background: transparent url("../img/az_subtle.png") repeat scroll 0% 0%;
+    background: transparent url("/img/az_subtle.png") repeat scroll 0% 0%;
 }
 
 .creatorTag {
@@ -72,5 +72,13 @@ label {
 
 
 .k-icon {
-    background-image: url(../img/sprite.png);
+    background-image: url(/img/sprite.png);
+}
+
+a.creditLink, p.creditAuthor {
+    font-size: 24px;
+}
+
+p.creditAuthor {
+    display: inline-block;
 }

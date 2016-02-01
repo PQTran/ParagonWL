@@ -35,6 +35,13 @@
     content: "\e806";
 }
 
+.icon-submit:after {
+    content: "\e810";
+    margin-right: 4px;
+    position: relative;
+    top: 1px;
+}
+
 * {
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;

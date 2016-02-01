@@ -26,17 +26,20 @@
         <div class="double-bounce1"></div>
         <div class="double-bounce2"></div>
     </div>
-    
+
     <nav id="expandButton" ng-show="navigationPanelIsCollapsed">
         <ul class="nav">
-            <li><a href="#" class="icon-expand" ng-click="expandPanel()"></a></li>
+            <li><a href="#" title="Expand" ng-click="expandPanel()" class="icon-expand"></a></li>
         </ul>
     </nav>
 
+    <div kendo-window="informationWindow" id="informationWindow" k-options="informationWindowOptions">
+    </div>
+
     <div kendo-splitter="splitter" id="splitter" k-options="splitterOptions" style="height:100%; border:0;">
         <div id="navigationPanel" style="text-align:center;">
-            <div kendo-window="window" k-options="windowOptions"></div>
-            <div kendo-tooltip k-options="tooltipOptions" class="creatorTag"><h1>PT</h1></div>
+            <div kendo-window="loginPromptWindow" k-options="loginPromptWindowOptions"></div>
+            <div kendo-tooltip k-options="initialsTooltipOptions" class="creatorTag"><h1>PT</h1></div>
 
             <div style="margin-left:50px; display:inline-block; position:relative; top:-90px;">
                 <form kendo-validator="validator" k-options="validatorOptions">
@@ -63,7 +66,7 @@
                         </label>
                     </div>
                     <div style="margin-top:30px; float:right;">
-                        <button id="getWorkLogButton" class="k-button" ng-click="getWorkLog()"><span class="k-icon k-i-arrow-e" style="margin-top:-1px;"></span>Get Work Log</button>
+                        <button id="getWorkLogButton" class="k-button" ng-click="getWorkLog()"><span class="icon-submit"></span>Get Work Log</button>
                     </div>
                 </form>
             </div>
@@ -81,10 +84,10 @@
 
             <nav id="taskButtons">
                 <ul class="nav">
-                    <li><a href="#" class="icon-collapse" ng-click="collapsePanel()"></a></li>
-                    <li><a href="https://paragontesting.atlassian.net/" target="_newtab" class="icon-login"></a></li>
-                    <li><a href="#" class="icon-heart"></a></li>
-                    <li><a href="#" class="icon-information"></a></li>
+                    <li><a href="#" ng-click="collapsePanel()" title="Collapse" class="icon-collapse"></a></li>
+                    <li><a href="https://paragontesting.atlassian.net/" target="_newtab" title="Login Atlassian" class="icon-login"></a></li>
+                    <li><a href="#" ng-click="" title="Coming soon!" class="icon-heart"></a></li>
+                    <li><a href="#" ng-click="openCloseInformationWindow()" title="Credits" class="icon-information"></a></li>
                 </ul>
             </nav>
 
@@ -99,20 +102,41 @@
         </div>
     </div>
 
-    <script type="text/x-kendo-template" id="modalTemplate">
+    <script type="text/x-kendo-template" id="loginPromptWindowTemplate">
         <div style="padding: 25px 25px;">
             <p>Please ensure that you are logged into JIRA before proceeding.</p>
             <p>Click <a href="https://paragontesting.atlassian.net/" target="_newtab">here</a> to verify or log in.</p>
         </div>
         <div>
-            <button class="k-button" id="loginPromptWindowButton" ng-click="closeWindow()" style="float:right; margin: 25px 25px;">OK</button>
+            <button class="k-button" id="loginPromptWindowButton" ng-click="closeLoginPromptWindow()" style="float:right; margin: 25px 25px;">OK</button>
         </div>
+    </script>
+
+    <script type="text/x-kendo-template" id="informationWindowTemplate">
+        <a href="https://ihatetomatoes.net/create-custom-preloading-screen/" target="_newtab" class="creditLink">Loader</a>
+        <p class="creditAuthor">&nbsp;by Petr Tichy</p>
+        <br />
+        <a href="http://forismatic.com/en/api/" target="_newtab" class="creditLink">Quotes</a>
+        <p class="creditAuthor">&nbsp;by Alexander Mikhailov</p>
+        <br />
+        <a href="https://css-tricks.com/circular-3d-buttons/" target="_newtab" class="creditLink">Nav Buttons</a>
+        <p class="creditAuthor">&nbsp;by Anon Publisher</p>
+        <br />
+        <a href="http://subtlepatterns.com/" target="_newtab" class="creditLink" style="position:relative; top:-29px;">Backgrounds</a>
+        <p class="creditAuthor" style="width:320px;">&nbsp;by Anli Zaimi, Uday Nandan, &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vasudha Chandak</p>
     </script>
 
     <script>
         var workLogApp = angular.module("workLogApp", ["kendo.directives"]);
 
         workLogApp.controller("workLogController", ["$scope", "$http", function ($scope, $http) {
+
+            var autoUnfocusCheckboxes = function () {
+                $('input:checkbox').change(() => {
+                    $('input:checkbox').blur();
+                });
+            };
+            autoUnfocusCheckboxes();
 
             $scope.getWorkLog = function () {
                 $('#getWorkLogButton').blur();
@@ -153,12 +177,10 @@
                             $(".spinner").removeClass("startLoading");
                         });
                     }, 500);
-
                 }
             };
 
-
-            $scope.tooltipOptions = {
+            $scope.initialsTooltipOptions = {
                 content: "Made with KendoUI + AngularJS",
                 position: "left"
             };
@@ -176,6 +198,29 @@
                 }
             };
 
+            $scope.informationWindowOptions = {
+                visible: false,
+                title: 'Give Credit Where Credit is Due',
+                height: 200,
+                width: 500,
+                content: {
+                    template: $('#informationWindowTemplate').html()
+                },
+                animation: {
+                    open: {
+                        effects: false
+                    },
+                    close: {
+                        effects: false
+                    }
+                },
+                resizable: false,
+                scrollable: false,
+                close: (e) => {
+                    $scope.informationWindowOpened = false;
+                }
+            };
+
             var adjustInspirationalContentHeight = function () {
                 var startingBottomFrameHeight = 503;
                 var currentBottomFrameHeight = $("#iframePanel").height();
@@ -186,7 +231,7 @@
                 $(".spinner").css('bottom', '25%').css('bottom', heightDiff);
             };
 
-            $scope.windowOptions = {
+            $scope.loginPromptWindowOptions = {
                 visible: false,
                 resizable: false,
                 height: 200,
@@ -195,12 +240,12 @@
                 scrollable: false,
                 draggable: false,
                 content: {
-                    template: $("#modalTemplate").html()
+                    template: $("#loginPromptWindowTemplate").html()
                 },
                 open: function () {
                     $(".k-widget.k-window").keypress(function (e) {
                         if (e.which == 13)
-                            $scope.closeWindow();
+                            $scope.closeLoginPromptWindow();
                     });
                 }
             };
@@ -232,6 +277,8 @@
             };
 
             $scope.$on("kendoRendered", function (e) {
+                $('.k-window-content.k-content').css('background', "transparent url('/img/crossword.png') repeat scroll 0% 0%");
+
                 $scope.updateStartCalendar();
                 $scope.updateEndCalendar();
 
@@ -250,8 +297,8 @@
                     $('body').addClass('loaded');
 
                     setTimeout(function () {
-                        $scope.window.center();
-                        $scope.window.open();
+                        $scope.loginPromptWindow.center();
+                        $scope.loginPromptWindow.open();
                     }, 1000);
                 });
 
@@ -259,11 +306,11 @@
 
             var hideSplitterCollapseExpandButton = function () {
                 $(".k-icon.k-collapse-prev").hide();
-                $(".k-icon.k-expand-prev").hide();                
+                $(".k-icon.k-expand-prev").hide();
             };
 
             $(document).on("click", ".k-overlay", function () {
-                $scope.closeWindow();
+                $scope.closeLoginPromptWindow();
             });
 
             $scope.updateStartCalendar = function () {
@@ -276,8 +323,8 @@
                 $scope.startCalendar.max(endDate);
             };
 
-            $scope.closeWindow = function () {
-                $scope.window.close();
+            $scope.closeLoginPromptWindow = function () {
+                $scope.loginPromptWindow.close();
                 $("#username").focus();
             };
 
@@ -296,8 +343,20 @@
             var adjustTaskButtonsHeight = function () {
                 var navigationPanelHeight = $('#navigationPanel').height();
                 var taskButtonTopAdjustment = navigationPanelHeight - 49;
-                
+
                 $('#taskButtons').css({ top: taskButtonTopAdjustment + "px", position: 'absolute' });
+            };
+
+            $scope.openCloseInformationWindow = function () {
+                if (!$scope.informationWindowOpened) {
+                    $scope.informationWindow.center();
+                    $scope.informationWindow.open();
+                    $scope.informationWindowOpened = true;
+                }
+                else {
+                    $scope.informationWindow.close();
+                    $scope.informationWindowOpened = false;
+                }
             };
 
         }]);
