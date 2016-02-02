@@ -28,7 +28,7 @@
     </div>
 
     <nav id="expandButton" ng-show="navigationPanelIsCollapsed">
-        <ul class="nav">
+        <ul kendo-tooltip="expandButtonTooltip" k-options="expandButtonTooltipOptions" class="nav">
             <li><a href="#" title="Expand" ng-click="expandPanel()" class="icon-expand"></a></li>
         </ul>
     </nav>
@@ -65,7 +65,7 @@
                             Show subtasks
                         </label>
                     </div>
-                    <div style="margin-top:30px; float:right;">
+                    <div style="margin-top:15px; float:left;">
                         <button id="getWorkLogButton" class="k-button" ng-click="getWorkLog()"><span class="icon-submit"></span>Get Work Log</button>
                     </div>
                 </form>
@@ -83,9 +83,9 @@
             </div>
 
             <nav id="taskButtons">
-                <ul class="nav">
+                <ul kendo-tooltip k-options="taskButtonTooltipOptions" class="nav">
                     <li><a href="#" ng-click="collapsePanel()" title="Collapse" class="icon-collapse"></a></li>
-                    <li><a href="https://paragontesting.atlassian.net/" target="_newtab" title="Login Atlassian" class="icon-login"></a></li>
+                    <li><a href="https://paragontesting.atlassian.net/" target="_newtab" title="Atlassian Login" class="icon-login"></a></li>
                     <li><a href="#" ng-click="" title="Coming soon!" class="icon-heart"></a></li>
                     <li><a href="#" ng-click="openCloseInformationWindow()" title="Credits" class="icon-information"></a></li>
                 </ul>
@@ -183,6 +183,41 @@
             $scope.initialsTooltipOptions = {
                 content: "Made with KendoUI + AngularJS",
                 position: "left"
+            };
+
+            $scope.taskButtonTooltipOptions = {
+                position: "top",
+                showAfter: 600,
+                animation: {
+                    open: {
+                        effects: "zoom:in slideIn:down",
+                        duration: 200
+                    },
+                    close: {
+                        effects: "slideIn:up",
+                        duration: 200,
+                        reverse: true
+                    }
+                },
+                filter: "a",
+                callout: true
+            };
+
+            $scope.expandButtonTooltipOptions = {
+                position: "bottom",
+                showAfter: 600,
+                animation: {
+                    open: {
+                        effects: "zoom:in slideIn:up",
+                        duration: 200
+                    },
+                    close: {
+                        effects: "slideIn:down",
+                        duration: 200,
+                        reverse: true
+                    }
+                },
+                filter: "a"
             };
 
             $scope.splitterOptions = {
@@ -338,6 +373,7 @@
                 $scope.splitter.expand("#navigationPanel");
                 hideSplitterCollapseExpandButton();
                 $scope.navigationPanelIsCollapsed = false;
+                $scope.expandButtonTooltip.hide();
             };
 
             var adjustTaskButtonsHeight = function () {
