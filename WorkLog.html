@@ -29,7 +29,7 @@
     </div>
 
     <nav id="expandButton" ng-show="navigationPanelIsCollapsed">
-        <ul kendo-tooltip="expandButtonTooltip" k-options="expandButtonTooltipOptions" class="nav">
+        <ul kendo-tooltip k-options="expandButtonTooltipOptions" class="nav">
             <li><a href="#" title="Expand" ng-click="expandPanel()" class="icon-expand"></a></li>
         </ul>
     </nav>
@@ -85,10 +85,10 @@
 
             <nav id="taskButtons">
                 <ul kendo-tooltip k-options="taskButtonTooltipOptions" class="nav">
-                    <li><a href="#" ng-click="collapsePanel()" title="Collapse" class="icon-collapse"></a></li>
-                    <li><a href="https://paragontesting.atlassian.net/" target="_newtab" title="Atlassian Login" class="icon-login"></a></li>
-                    <li><a href="#" ng-click="" title="Coming soon!" class="icon-heart"></a></li>
-                    <li><a href="#" ng-click="openCloseInformationWindow()" title="Credits" class="icon-information"></a></li>
+                    <li><a href="#" ng-click="collapsePanel()" id="Collapse" class="icon-collapse"></a></li>
+                    <li><a href="https://paragontesting.atlassian.net/" target="_newtab" id="Atlassian_Login" class="icon-login"></a></li>
+                    <li><a href="#" ng-click="likeWorkLogApp()" id="likeWorkLogAppButton" class="icon-heart"></a></li>
+                    <li><a href="#" ng-click="openCloseInformationWindow()" id="Credits" class="icon-information"></a></li>
                 </ul>
             </nav>
 

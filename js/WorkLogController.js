@@ -1,6 +1,7 @@
 ﻿var workLogApp = angular.module("workLogApp", ["kendo.directives"]);
 
 workLogApp.controller("workLogController", ["$scope", "$http", function ($scope, $http) {
+    var likeAPIUrl = "https://api.myjson.com/bins/20ny1";
 
     var autoUnfocusCheckboxes = function () {
         $('input:checkbox').change(() => {
@@ -8,6 +9,33 @@ workLogApp.controller("workLogController", ["$scope", "$http", function ($scope,
         });
     };
     autoUnfocusCheckboxes();
+
+    var getTotalWorkLogAppLikes = function () {
+        $http({
+            method: "GET",
+            url: likeAPIUrl
+        }).then(function (response) {
+            $scope.currentLikes = parseInt(response.data.likes);
+        }, function (response) {
+        });
+    };
+
+    $scope.likeWorkLogApp = function () {
+        if (!$scope.disableLikeButton) {
+            $http({
+                method: "PUT",
+                url: likeAPIUrl,
+                data: '{"likes":"' + ($scope.currentLikes + 1) + '"}'
+            }).then(function (response) {
+                $scope.currentLikes += 1;
+                $scope.disableLikeButton = true;
+            }, function (response) {
+            });
+        }
+        else {
+
+        }
+    };
 
     $scope.getWorkLog = function () {
         $('#getWorkLogButton').blur();
@@ -75,7 +103,15 @@ workLogApp.controller("workLogController", ["$scope", "$http", function ($scope,
             }
         },
         filter: "a",
-        callout: true
+        content: function (e) {
+            if (e.target["0"].id == "likeWorkLogAppButton") {
+                return $scope.currentLikes + " likes!";
+            }
+            else {
+                var resultString = e.target["0"].id.replace("_", " ");
+                return resultString;
+            }
+        }
     };
 
     $scope.expandButtonTooltipOptions = {
@@ -211,6 +247,8 @@ workLogApp.controller("workLogController", ["$scope", "$http", function ($scope,
                 $scope.loginPromptWindow.open();
             }, 1000);
         });
+
+        getTotalWorkLogAppLikes();
 
     });
 
