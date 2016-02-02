@@ -1,7 +1,7 @@
 ﻿var workLogApp = angular.module("workLogApp", ["kendo.directives"]);
 
 workLogApp.controller("workLogController", ["$scope", "$http", function ($scope, $http) {
-    var likeAPIUrl = "https://api.myjson.com/bins/20ny1";
+    var likeAPIUrl = "https://api.myjson.com/bins/12tkx";
 
     var autoUnfocusCheckboxes = function () {
         $('input:checkbox').change(() => {
