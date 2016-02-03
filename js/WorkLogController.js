@@ -1,6 +1,6 @@
-﻿var workLogApp = angular.module("workLogApp", ["kendo.directives"]);
+﻿var workLogApp = angular.module("workLogApp", ["kendo.directives", "ngCookies"]);
 
-workLogApp.controller("workLogController", ["$scope", "$http", function ($scope, $http) {
+workLogApp.controller("workLogController", ["$scope", "$http", "$cookies", function ($scope, $http, $cookies) {
     var likeAPIUrl = "https://api.myjson.com/bins/12tkx";
 
     var autoUnfocusCheckboxes = function () {
@@ -21,14 +21,16 @@ workLogApp.controller("workLogController", ["$scope", "$http", function ($scope,
     };
 
     $scope.likeWorkLogApp = function () {
-        if (!$scope.disableLikeButton) {
+        console.log($cookies.get("workLogLiked"));
+        if (!$cookies.get("workLogLiked")) {
             $http({
                 method: "PUT",
                 url: likeAPIUrl,
                 data: '{"likes":"' + ($scope.currentLikes + 1) + '"}'
             }).then(function (response) {
+                $cookies.put("workLogLiked", "true", { expires: "Sun, 01 Aug 2100 11:07:56 GMT" });
                 $scope.currentLikes += 1;
-                $scope.disableLikeButton = true;
+                $scope.taskButtonTooltip.refresh();
             }, function (response) {
             });
         }
@@ -104,11 +106,12 @@ workLogApp.controller("workLogController", ["$scope", "$http", function ($scope,
         },
         filter: "a",
         content: function (e) {
-            if (e.target["0"].id == "likeWorkLogAppButton") {
+            var element = e.target["0"];
+            if (element.id == "Like_App") {
                 return $scope.currentLikes + " likes!";
             }
             else {
-                var resultString = e.target["0"].id.replace("_", " ");
+                var resultString = element.id.replace("_", " ");
                 return resultString;
             }
         }

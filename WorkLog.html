@@ -11,6 +11,7 @@
 
     <script src="js/jquery.min.js"></script>
     <script src="js/angular.min.js"></script>
+    <script src="js/angular-cookies.min.js"></script>
     <script src="js/kendo.all.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/WorkLogController.js"></script>
@@ -84,11 +85,11 @@
             </div>
 
             <nav id="taskButtons">
-                <ul kendo-tooltip k-options="taskButtonTooltipOptions" class="nav">
-                    <li><a href="#" ng-click="collapsePanel()" id="Collapse" class="icon-collapse"></a></li>
-                    <li><a href="https://paragontesting.atlassian.net/" target="_newtab" id="Atlassian_Login" class="icon-login"></a></li>
-                    <li><a href="#" ng-click="likeWorkLogApp()" id="likeWorkLogAppButton" class="icon-heart"></a></li>
-                    <li><a href="#" ng-click="openCloseInformationWindow()" id="Credits" class="icon-information"></a></li>
+                <ul kendo-tooltip="taskButtonTooltip" k-options="taskButtonTooltipOptions" class="nav">
+                    <li><a href="#" ng-click="collapsePanel()" class="icon-collapse" id="Collapse"></a></li>
+                    <li><a href="https://paragontesting.atlassian.net/" target="_newtab" class="icon-login" id="Atlassian_Login"></a></li>
+                    <li><a href="#" ng-click="likeWorkLogApp()" class="icon-heart" id="Like_App"></a></li>
+                    <li><a href="#" ng-click="openCloseInformationWindow()" class="icon-information" id="Credits"></a></li>
                 </ul>
             </nav>
 
