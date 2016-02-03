@@ -15,6 +15,13 @@
     <script src="js/kendo.all.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/WorkLogController.js"></script>
+    <style>
+        .k-widget.k-notification {
+            position: relative;
+            top: -37px;
+            right: -200px;
+        }
+    </style>
 </head>
 <body ng-app="workLogApp" ng-controller="workLogController">
 
@@ -35,8 +42,8 @@
         </ul>
     </nav>
 
-    <div kendo-window="informationWindow" id="informationWindow" k-options="informationWindowOptions">
-    </div>
+    <div kendo-window="informationWindow" id="informationWindow" k-options="informationWindowOptions"></div>
+    <span kendo-notification="notification" k-options="notificationOptions"></span>
 
     <div kendo-splitter="splitter" id="splitter" k-options="splitterOptions" style="height:100%; border:0;">
         <div id="navigationPanel" style="text-align:center;">

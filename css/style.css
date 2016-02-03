@@ -42,6 +42,16 @@
     top: 1px;
 }
 
+.icon-smile:after {
+    content: "\e811";
+    margin-right: 6px;
+}
+
+.icon-frown:after {
+    content: "\e812";
+    margin-right: 6px;
+}
+
 * {
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;

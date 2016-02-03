@@ -17,11 +17,19 @@ workLogApp.controller("workLogController", ["$scope", "$http", "$cookies", funct
         }).then(function (response) {
             $scope.currentLikes = parseInt(response.data.likes);
         }, function (response) {
+            $("#Like_App").attr("id", "Unavailable");
+        });
+    };
+
+    var removeOpenNotifications = function () {
+        var notifications = $scope.notification.getNotifications();
+        notifications.each(function () {
+            $(this).remove();
         });
     };
 
     $scope.likeWorkLogApp = function () {
-        console.log($cookies.get("workLogLiked"));
+        removeOpenNotifications();
         if (!$cookies.get("workLogLiked")) {
             $http({
                 method: "PUT",
@@ -31,11 +39,13 @@ workLogApp.controller("workLogController", ["$scope", "$http", "$cookies", funct
                 $cookies.put("workLogLiked", "true", { expires: "Sun, 01 Aug 2100 11:07:56 GMT" });
                 $scope.currentLikes += 1;
                 $scope.taskButtonTooltip.refresh();
+                $scope.notification.show("Thank you!", "info");
             }, function (response) {
+                $scope.notification.show("Unable to record like, sorry!", "error");
             });
         }
         else {
-
+            $scope.notification.show("You may only like once.", "error");
         }
     };
 
@@ -223,6 +233,19 @@ workLogApp.controller("workLogController", ["$scope", "$http", "$cookies", funct
             longLength: "Input is too long. Try again."
         },
         errorTemplate: "<span><small>#=message#</small></span>"
+    };
+
+    $scope.notificationOptions = {
+        appendTo: "#taskButtons > .nav",
+        autoHideAfter: 1000,
+        show: function (e) {
+            if (e.element["0"].className.indexOf("error") > -1) {
+                $(".k-icon.k-i-note").replaceWith("<span class='icon-frown'></span>");
+            }
+            else if (e.element["0"].className.indexOf("info") > -1) {
+                $(".k-icon.k-i-note").replaceWith("<span class='icon-smile'></span>");
+            }
+        }
     };
 
     $scope.$on("kendoRendered", function (e) {
