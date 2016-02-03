@@ -2,6 +2,7 @@
 
 workLogApp.controller("workLogController", ["$scope", "$http", "$cookies", function ($scope, $http, $cookies) {
     var likeAPIUrl = "https://api.myjson.com/bins/12tkx";
+    $scope.storeUserOptions = {};
 
     var autoUnfocusCheckboxes = function () {
         $('input:checkbox').change(() => {
@@ -153,7 +154,7 @@ workLogApp.controller("workLogController", ["$scope", "$http", "$cookies", funct
         resize: function () {
             adjustInspirationalContentHeight();
             adjustTaskButtonsHeight();
-            hideSplitterCollapseExpandButton();
+            removeSplitterCollapseExpandButton();
         }
     };
 
@@ -202,6 +203,7 @@ workLogApp.controller("workLogController", ["$scope", "$http", "$cookies", funct
             template: $("#loginPromptWindowTemplate").html()
         },
         open: function () {
+            autoUnfocusCheckboxes();
             $(".k-widget.k-window").keypress(function (e) {
                 if (e.which == 13)
                     $scope.closeLoginPromptWindow();
@@ -260,31 +262,32 @@ workLogApp.controller("workLogController", ["$scope", "$http", "$cookies", funct
             return false;
         });
 
-        hideSplitterCollapseExpandButton();
-
         $.getJSON("http://api.forismatic.com/api/1.0/?method=getQuote&lang=en&format=jsonp&jsonp=?", function (data) {
             $("#inspirationalQuote").append(data.quoteText);
             $("#inspirationalAuthor").append(data.quoteAuthor);
 
             $('body').addClass('loaded');
 
-            setTimeout(function () {
-                $scope.loginPromptWindow.center();
-                $scope.loginPromptWindow.open();
-            }, 1000);
+
+            if (!$cookies.get("stopDisplayingPagePopup")) {
+                setTimeout(function () {
+                    $scope.loginPromptWindow.center();
+                    $scope.loginPromptWindow.open();
+                }, 1000);
+            }
         });
 
         getTotalWorkLogAppLikes();
 
     });
 
-    var hideSplitterCollapseExpandButton = function () {
-        $(".k-icon.k-collapse-prev").hide();
-        $(".k-icon.k-expand-prev").hide();
+    var removeSplitterCollapseExpandButton = function () {
+        $(".k-icon.k-collapse-prev").remove();
+        $(".k-icon.k-expand-prev").remove();
     };
 
     $(document).on("click", ".k-overlay", function () {
-        $scope.closeLoginPromptWindow();
+        $scope.closeLoginPromptWindow(false);
     });
 
     $scope.updateStartCalendar = function () {
@@ -297,20 +300,24 @@ workLogApp.controller("workLogController", ["$scope", "$http", "$cookies", funct
         $scope.startCalendar.max(endDate);
     };
 
-    $scope.closeLoginPromptWindow = function () {
+    $scope.closeLoginPromptWindow = function (buttonPressed) {
+        if ($scope.storeUserOptions.stopDisplayingPagePopup && buttonPressed)
+            $cookies.put("stopDisplayingPagePopup", "true");
+
+        if ($cookies.get("stopDisplayingPagePopup") && buttonPressed)
+            $scope.notification.show("Setting has been saved.", "info");
+
         $scope.loginPromptWindow.close();
         $("#username").focus();
     };
 
     $scope.collapsePanel = function () {
         $scope.splitter.collapse("#navigationPanel");
-        hideSplitterCollapseExpandButton();
         $scope.navigationPanelIsCollapsed = true;
     };
 
     $scope.expandPanel = function () {
         $scope.splitter.expand("#navigationPanel");
-        hideSplitterCollapseExpandButton();
         $scope.navigationPanelIsCollapsed = false;
         $scope.expandButtonTooltip.hide();
     };

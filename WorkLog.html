@@ -15,13 +15,6 @@
     <script src="js/kendo.all.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/WorkLogController.js"></script>
-    <style>
-        .k-widget.k-notification {
-            position: relative;
-            top: -37px;
-            right: -200px;
-        }
-    </style>
 </head>
 <body ng-app="workLogApp" ng-controller="workLogController">
 
@@ -37,7 +30,7 @@
     </div>
 
     <nav id="expandButton" ng-show="navigationPanelIsCollapsed">
-        <ul kendo-tooltip k-options="expandButtonTooltipOptions" class="nav">
+        <ul kendo-tooltip="expandButtonTooltip" k-options="expandButtonTooltipOptions" class="nav">
             <li><a href="#" title="Expand" ng-click="expandPanel()" class="icon-expand"></a></li>
         </ul>
     </nav>
@@ -115,9 +108,12 @@
         <div style="padding: 25px 25px;">
             <p>Please ensure that you are logged into JIRA before proceeding.</p>
             <p>Click <a href="https://paragontesting.atlassian.net/" target="_newtab">here</a> to verify or log in.</p>
+            <fieldset>
+                <input type="checkbox" id="stopDisplayingPagePopup" ng-model="storeUserOptions.stopDisplayingPagePopup" /><label for="stopDisplayingPagePopup">Do not show this again</label>
+            </fieldset>
         </div>
         <div>
-            <button class="k-button" id="loginPromptWindowButton" ng-click="closeLoginPromptWindow()" style="float:right; margin: 25px 25px;">OK</button>
+            <button class="k-button" id="loginPromptWindowButton" ng-click="closeLoginPromptWindow(true)" style="float:right; margin-right:20px;">OK</button>
         </div>
     </script>
 

@@ -82,3 +82,32 @@ a.creditLink, p.creditAuthor {
 p.creditAuthor {
     display: inline-block;
 }
+
+.k-widget.k-notification {
+    position: relative;
+    top: -37px;
+    right: -200px;
+}
+
+
+fieldset {
+    font-size: 1em;
+    padding: 0.5em 0;
+    border-radius: 1em;
+    font-family: sans-serif;
+}
+
+    fieldset > label, fieldset > input {
+        display: inline;
+        font-size: inherit;
+        padding: 0.2em;
+        margin: 0.1em 0.2em;
+        -moz-box-sizing: content-box;
+        -webkit-box-sizing: content-box;
+        box-sizing: content-box;
+    }
+
+input[type="checkbox"] {
+    position: relative;
+    top: 2px;
+}
