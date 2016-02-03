@@ -1,7 +1,7 @@
 ﻿var workLogApp = angular.module("workLogApp", ["kendo.directives", "ngCookies"]);
 
 workLogApp.controller("workLogController", ["$scope", "$http", "$cookies", function ($scope, $http, $cookies) {
-    var likeAPIUrl = "https://api.myjson.com/bins/12tkx";
+    var likeAPIUrl = "https://api.myjson.com/bins/tjh5";
     $scope.storeUserOptions = {};
 
     var autoUnfocusCheckboxes = function () {
