@@ -1,7 +1,7 @@
 ﻿var workLogApp = angular.module("workLogApp", ["kendo.directives"]);
 
 workLogApp.controller("workLogController", ["$scope", "$http", function ($scope, $http) {
-    var likeAPIUrl = "https://api.myjson.com/bins/14gat";
+    var likeAPIUrl = "https://api.myjson.com/bins/3ws6l";
 
     $scope.storeUserOptions = {};
 
@@ -290,11 +290,17 @@ workLogApp.controller("workLogController", ["$scope", "$http", function ($scope,
                     $scope.loginPromptWindow.open();
                 }, 1000);
             }
+
         });
 
         getTotalWorkLogAppLikes();
 
     });
+
+    $scope.removeOverlayAndSVG = function () {
+        $("#newFeature").removeClass("showNewFeatureSVG");
+        $("#newFeature").addClass("hideNewFeatureSVG");
+    };
 
     var removeSplitterCollapseExpandButton = function () {
         $(".k-icon.k-collapse-prev").remove();
@@ -323,6 +329,14 @@ workLogApp.controller("workLogController", ["$scope", "$http", function ($scope,
 
         $scope.loginPromptWindow.close();
         $("#username").focus();
+
+
+        if (localStorageSupported && !localStorage.getItem("firstRunComplete")) {
+            localStorage.setItem("firstRunComplete", "true");
+
+            $("#newFeature").removeClass("hidden");
+            $("#newFeature").addClass("showNewFeatureSVG");
+        }
     };
 
     $scope.collapsePanel = function () {

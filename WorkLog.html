@@ -38,6 +38,22 @@
     <div kendo-window="informationWindow" id="informationWindow" k-options="informationWindowOptions"></div>
     <span kendo-notification="notification" k-options="notificationOptions"></span>
 
+    <div id="newFeature" ng-click="removeOverlayAndSVG()" class="hidden" style="position:absolute; top:0; left:0; z-index:900; height:100%; width:100%;">
+        <div style="position:absolute; height:100%; width:210px; top:-570px; background-color:rgba(0, 0, 0, 0.75);"></div>
+        <div style="position:absolute; height:100%; width:100%; left:210px; background-color:rgba(0, 0, 0, 0.75);"></div>
+        <div style="position:absolute; height:100%; width:210px; top:500px; background-color:rgba(0, 0, 0, 0.75);"></div>
+        <div style="position:absolute; top:185px; left:25px; font-family:'Comic Sans MS'; font-size:25px; color:white;">
+            New feature!
+        </div>
+        <svg style="position:absolute; top:0; left:0; height:100%; width:100%;">
+            <path d="M 90 240 S 150 250 120 390" marker-end="url(#arrowMarker)" style="fill:none; stroke:white; stroke-width:4;" />
+            <defs>
+                <marker id="arrowMarker" markerHeight="12" markerWidth="16" orient="auto" markerUnits="strokeWidth" refY="10" refX="21" viewBox="0 0 36 21">
+                    <path d="M5,0 c20,11 20,9 10,20" style="fill:none; stroke:white; stroke-width:2"></path>
+                </marker>
+            </defs>
+        </svg>
+    </div>
     <div kendo-splitter="splitter" id="splitter" k-options="splitterOptions" style="height:100%; border:0;">
         <div id="navigationPanel" style="text-align:center;">
             <div kendo-window="loginPromptWindow" k-options="loginPromptWindowOptions"></div>
