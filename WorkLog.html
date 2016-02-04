@@ -108,7 +108,7 @@
         <div style="padding: 25px 25px;">
             <p>Please ensure that you are logged into JIRA before proceeding.</p>
             <p>Click <a href="https://paragontesting.atlassian.net/" target="_newtab">here</a> to verify or log in.</p>
-            <fieldset>
+            <fieldset ng-class="showHideUserOption">
                 <input type="checkbox" id="stopDisplayingPagePopup" ng-model="storeUserOptions.stopDisplayingPagePopup" /><label for="stopDisplayingPagePopup">Do not show this again</label>
             </fieldset>
         </div>

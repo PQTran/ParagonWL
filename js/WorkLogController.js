@@ -1,11 +1,18 @@
-﻿var workLogApp = angular.module("workLogApp", ["kendo.directives", "ngCookies"]);
+﻿var workLogApp = angular.module("workLogApp", ["kendo.directives"]);
 
-workLogApp.controller("workLogController", ["$scope", "$http", "$cookies", function ($scope, $http, $cookies) {
+workLogApp.controller("workLogController", ["$scope", "$http", function ($scope, $http) {
     var likeAPIUrl = "https://api.myjson.com/bins/tjh5";
     $scope.storeUserOptions = {};
 
+    var hasLocalStorageSupport = function () {
+        return (localStorage !== undefined);
+    };
+    var localStorageSupported = hasLocalStorageSupport();
+
+    $scope.showHideUserOption = (localStorageSupported ? "displayOption" : "hideOption");
+
     var autoUnfocusCheckboxes = function () {
-        $('input:checkbox').change(() => {
+        $('input:checkbox').change(function () {
             $('input:checkbox').blur();
         });
     };
@@ -31,22 +38,30 @@ workLogApp.controller("workLogController", ["$scope", "$http", "$cookies", funct
 
     $scope.likeWorkLogApp = function () {
         removeOpenNotifications();
-        if (!$cookies.get("workLogLiked")) {
-            $http({
-                method: "PUT",
-                url: likeAPIUrl,
-                data: '{"likes":"' + ($scope.currentLikes + 1) + '"}'
-            }).then(function (response) {
-                $cookies.put("workLogLiked", "true", { expires: "Sun, 01 Aug 2100 11:07:56 GMT" });
-                $scope.currentLikes += 1;
-                $scope.taskButtonTooltip.refresh();
-                $scope.notification.show("Thank you!", "info");
-            }, function (response) {
-                $scope.notification.show("Unable to record like, sorry!", "error");
-            });
+
+        if (!localStorageSupported) {
+            $scope.notification.show("Your browser is not compatible.", "error");
         }
         else {
-            $scope.notification.show("You may only like once.", "error");
+
+            if (!localStorage.getItem("workLogLiked")) {
+                $http({
+                    method: "PUT",
+                    url: likeAPIUrl,
+                    data: '{"likes":"' + ($scope.currentLikes + 1) + '"}'
+                }).then(function (response) {
+                    localStorage.setItem("workLogLiked", "true");
+                    $scope.currentLikes += 1;
+                    $scope.taskButtonTooltip.refresh();
+                    $scope.notification.show("Thank you!", "info");
+                }, function (response) {
+                    $scope.notification.show("Unable to record like, sorry!", "error");
+                });
+            }
+            else {
+                $scope.notification.show("You may only like once.", "error");
+            }
+
         }
     };
 
@@ -176,7 +191,7 @@ workLogApp.controller("workLogController", ["$scope", "$http", "$cookies", funct
         },
         resizable: false,
         scrollable: false,
-        close: (e) => {
+        close: function (e) {
             $scope.informationWindowOpened = false;
         }
     };
@@ -268,8 +283,7 @@ workLogApp.controller("workLogController", ["$scope", "$http", "$cookies", funct
 
             $('body').addClass('loaded');
 
-
-            if (!$cookies.get("stopDisplayingPagePopup")) {
+            if ((!localStorageSupported) || (localStorageSupported && !localStorage.getItem("stopDisplayingPagePopup"))) {
                 setTimeout(function () {
                     $scope.loginPromptWindow.center();
                     $scope.loginPromptWindow.open();
@@ -301,11 +315,10 @@ workLogApp.controller("workLogController", ["$scope", "$http", "$cookies", funct
     };
 
     $scope.closeLoginPromptWindow = function (buttonPressed) {
-        if ($scope.storeUserOptions.stopDisplayingPagePopup && buttonPressed)
-            $cookies.put("stopDisplayingPagePopup", "true");
-
-        if ($cookies.get("stopDisplayingPagePopup") && buttonPressed)
+        if (localStorageSupported && $scope.storeUserOptions.stopDisplayingPagePopup && buttonPressed) {
+            localStorage.setItem("stopDisplayingPagePopup", "true");
             $scope.notification.show("Setting has been saved.", "info");
+        }
 
         $scope.loginPromptWindow.close();
         $("#username").focus();
