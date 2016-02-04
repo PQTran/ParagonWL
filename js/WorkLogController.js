@@ -2,6 +2,7 @@
 
 workLogApp.controller("workLogController", ["$scope", "$http", function ($scope, $http) {
     var likeAPIUrl = "https://api.myjson.com/bins/14gat";
+
     $scope.storeUserOptions = {};
 
     var hasLocalStorageSupport = function () {
