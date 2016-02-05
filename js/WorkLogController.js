@@ -22,11 +22,12 @@ workLogApp.controller("workLogController", ["$scope", "$http", function ($scope,
     var getTotalWorkLogAppLikes = function () {
         $http({
             method: "GET",
-            url: likeAPIUrl
+            url: likeAPIUrl,
+            timeout: 500
         }).then(function (response) {
             $scope.currentLikes = parseInt(response.data.likes);
         }, function (response) {
-            $("#Like_App").attr("id", "Unavailable");
+            $scope.notification.show("Likes service currently unavailable.", "error");
         });
     };
 
@@ -42,28 +43,27 @@ workLogApp.controller("workLogController", ["$scope", "$http", function ($scope,
 
         if (!localStorageSupported) {
             $scope.notification.show("Your browser is not compatible.", "error");
+            return;
+        }
+        if (!localStorage.getItem("workLogLiked")) {
+            $http({
+                method: "PUT",
+                url: likeAPIUrl,
+                data: '{"likes":"' + ($scope.currentLikes + 1) + '"}',
+                timeout: 250
+            }).then(function (response) {
+                localStorage.setItem("workLogLiked", "true");
+                $scope.currentLikes += 1;
+                $scope.taskButtonTooltip.refresh();
+                $scope.notification.show("Thank you!", "info");
+            }, function (response) {
+                $scope.notification.show("Sorry, unable to record like.", "error");
+            });
         }
         else {
-
-            if (!localStorage.getItem("workLogLiked")) {
-                $http({
-                    method: "PUT",
-                    url: likeAPIUrl,
-                    data: '{"likes":"' + ($scope.currentLikes + 1) + '"}'
-                }).then(function (response) {
-                    localStorage.setItem("workLogLiked", "true");
-                    $scope.currentLikes += 1;
-                    $scope.taskButtonTooltip.refresh();
-                    $scope.notification.show("Thank you!", "info");
-                }, function (response) {
-                    $scope.notification.show("Unable to record like, sorry!", "error");
-                });
-            }
-            else {
-                $scope.notification.show("You may only like once.", "error");
-            }
-
+            $scope.notification.show("You may only like once.", "error");
         }
+
     };
 
     $scope.getWorkLog = function () {
