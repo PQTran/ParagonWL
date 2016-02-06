@@ -13,26 +13,36 @@
     speak: none;
 }
 
+.icon-expand:after {
+    content: "\e799";
+}
+
 .icon-collapse:after {
     content: "\e800";
 }
 
-.icon-expand:after {
+.icon-login:after {
     content: "\e801";
 }
 
-.icon-login:after {
-    content: "\e802";
-}
-
 .icon-heart:after {
-    content: "\e809";
+    content: "\e802";
     position: relative;
     top: 1px;
 }
 
 .icon-information:after {
+    content: "\e803";
+}
+
+.icon-smile:after {
+    content: "\e805";
+    margin-right: 6px;
+}
+
+.icon-frown:after {
     content: "\e806";
+    margin-right: 6px;
 }
 
 .icon-submit:after {
@@ -42,14 +52,10 @@
     top: 1px;
 }
 
-.icon-smile:after {
+.icon-refresh:after {
     content: "\e811";
-    margin-right: 6px;
-}
-
-.icon-frown:after {
-    content: "\e812";
-    margin-right: 6px;
+    position: relative;
+    top: 1px;
 }
 
 * {

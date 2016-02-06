@@ -17,7 +17,12 @@
 </head>
 <body ng-app="workLogApp" ng-controller="workLogController">
 
-    <!--<div style="height:41px; width:100%; background-color:#205081; position:absolute; top:468px; z-index:100; left:-16px;"></div>-->
+    <div id="iframeHeader">
+        <div style="float:right; position:relative; top:5px; right:8px;">
+            <span ng-show="showRefreshErrorMessage" style="color:#f57125; text-decoration-line:underline; text-decoration-style:dotted; position:relative; top:1px;"><small>Username input is incorrect, please double check.</small></span>
+            <button class="k-button" ng-click="refreshIframeContent()"><span class="icon-refresh"></span>&nbsp;Refresh</button>
+        </div>
+    </div>
 
     <div id="loader-wrapper">
         <div id="loader"></div>
@@ -111,7 +116,7 @@
             </nav>
 
         </div>
-        <div id="iframePanel">
+        <div id="iframePanel" style="overflow-y:scroll;">
             <div style="display:table; height:100%; width:100%;">
                 <div id="iframePanelPlaceHolder">
                     <h4 id="inspirationalQuote"></h4>

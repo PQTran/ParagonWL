@@ -65,11 +65,30 @@ workLogApp.controller("workLogController", ["$scope", "$http", function ($scope,
         }
 
     };
+    
+    $scope.refreshIframeContent = function () {
+
+        if ($("#inspirationalQuote").length > 0) {
+            $.getJSON("http://api.forismatic.com/api/1.0/?method=getQuote&lang=en&format=jsonp&jsonp=?", function (data) {
+                $("#inspirationalQuote").html(data.quoteText);
+                $("#inspirationalAuthor").html(data.quoteAuthor);
+            });
+            return;
+        }
+
+        $scope.showRefreshErrorMessage = false;
+        if ($scope.validator.validate())
+            $scope.getWorkLog();
+        else
+            $scope.showRefreshErrorMessage = true;
+    };
 
     $scope.getWorkLog = function () {
         $('#getWorkLogButton').blur();
         if ($scope.validator.validate()) {
             $('#username').blur();
+
+            $("#iframePanel").css("overflow-y", "scroll");
 
             $(".spinner").addClass("startLoading");
             $("#iframePanelPlaceHolder").addClass("startLoading");
@@ -103,12 +122,14 @@ workLogApp.controller("workLogController", ["$scope", "$http", function ($scope,
             setTimeout(function () {
                 $(".k-content-frame").on('load', function () {
                     $(".spinner").removeClass("startLoading");
+                    $("#iframePanel").css("overflow-y", "");
                 });
-            }, 500);
+            }, 400);
 
             setTimeout(function () {
                 $(".spinner").removeClass("startLoading");
-            }, 1500);
+                $("#iframePanel").css("overflow-y", "");
+            }, 500);
         }
     };
 
@@ -170,6 +191,7 @@ workLogApp.controller("workLogController", ["$scope", "$http", function ($scope,
         resize: function () {
             adjustInspirationalContentHeight();
             adjustTaskButtonsHeight();
+            adjustIframeHeaderHeight();
             removeSplitterCollapseExpandButton();
         }
     };
@@ -282,6 +304,8 @@ workLogApp.controller("workLogController", ["$scope", "$http", function ($scope,
             $("#inspirationalQuote").append(data.quoteText);
             $("#inspirationalAuthor").append(data.quoteAuthor);
 
+
+
             $('body').addClass('loaded');
 
             if ((!localStorageSupported) || (localStorageSupported && !localStorage.getItem("stopDisplayingPagePopup"))) {
@@ -348,6 +372,13 @@ workLogApp.controller("workLogController", ["$scope", "$http", function ($scope,
         $scope.splitter.expand("#navigationPanel");
         $scope.navigationPanelIsCollapsed = false;
         $scope.expandButtonTooltip.hide();
+    };
+
+    var adjustIframeHeaderHeight = function () {
+        var navigationPanelHeight = $("#navigationPanel").height();
+        var iframeHeaderAdjustment = navigationPanelHeight + 7;
+
+        $("#iframeHeader").css({ top: iframeHeaderAdjustment + "px" });
     };
 
     var adjustTaskButtonsHeight = function () {
