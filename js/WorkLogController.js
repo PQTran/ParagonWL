@@ -179,7 +179,11 @@ workLogApp.controller("workLogController", ["$scope", "$http", function ($scope,
                 reverse: true
             }
         },
-        filter: "a"
+        filter: "a",
+        show: function (e) {
+            if (!$scope.navigationPanelIsCollapsed)
+                $scope.expandButtonTooltip.hide();
+        }
     };
 
     $scope.splitterOptions = {
